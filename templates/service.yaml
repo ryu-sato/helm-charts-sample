@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "helm-charts-sample.fullname" . }}
+  name: {{ include "helm-charts-sample-v3.fullname" . }}
   labels:
-{{ include "helm-charts-sample.labels" . | indent 4 }}
+    {{- include "helm-charts-sample-v3.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,5 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "helm-charts-sample.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "helm-charts-sample-v3.selectorLabels" . | nindent 4 }}

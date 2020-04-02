@@ -1,4 +1,4 @@
-# Default values for helm-charts-sample.
+# Default values for helm-charts-sample-v3.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -6,7 +6,6 @@ replicaCount: 1
 
 image:
   repository: nginx
-  tag: stable
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -16,6 +15,8 @@ fullnameOverride: ""
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
+  # Annotations to add to the service account
+  annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
@@ -43,7 +44,6 @@ ingress:
   hosts:
     - host: chart-example.local
       paths: []
-
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

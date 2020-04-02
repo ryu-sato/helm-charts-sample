@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "helm-charts-sample.name" -}}
+{{- define "helm-charts-sample-v3.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "helm-charts-sample.fullname" -}}
+{{- define "helm-charts-sample-v3.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,17 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "helm-charts-sample.chart" -}}
+{{- define "helm-charts-sample-v3.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "helm-charts-sample.labels" -}}
-app.kubernetes.io/name: {{ include "helm-charts-sample.name" . }}
-helm.sh/chart: {{ include "helm-charts-sample.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "helm-charts-sample-v3.labels" -}}
+helm.sh/chart: {{ include "helm-charts-sample-v3.chart" . }}
+{{ include "helm-charts-sample-v3.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,11 +44,19 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{/*
+Selector labels
+*/}}
+{{- define "helm-charts-sample-v3.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "helm-charts-sample-v3.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
-{{- define "helm-charts-sample.serviceAccountName" -}}
+{{- define "helm-charts-sample-v3.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "helm-charts-sample.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "helm-charts-sample-v3.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
